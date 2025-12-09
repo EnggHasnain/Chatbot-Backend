@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+python-frontmatter
+openai
+openai-agents
+requests
+pydantic
