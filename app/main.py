@@ -1,4 +1,6 @@
 import os
+
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -8,7 +10,7 @@ from app.ingest import ingest_book
 from app.rag import retrieve_context
 from app.agent import run_agent  # <-- async function
 
-app = FastAPI()
+app = FastAPI(title="Physical AI Book Agent")
 
 # CORS configuration for local dev and Vercel production
 app.add_middleware(
@@ -68,3 +70,8 @@ async def api_ask(req: AskRequest):
         import traceback
         traceback.print_exc()
         return {"answer": "Error: backend failed while calling the model. Check server logs."}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port)

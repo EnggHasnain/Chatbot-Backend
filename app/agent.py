@@ -1,7 +1,7 @@
 import os
 from agents import Agent, Runner, OpenAIChatCompletionsModel, AsyncOpenAI, RunConfig
 
-# Get API key from environment variable (Fly.io uses GOOGLE_API_KEY)
+# Get API key from environment variable
 gemini_api_key = os.getenv("GOOGLE_API_KEY")
 if not gemini_api_key:
     raise ValueError("GOOGLE_API_KEY environment variable is not set")
