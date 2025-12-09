@@ -52,17 +52,15 @@ async def api_ask(req: AskRequest):
         # sync RAG context retrieval
         context = retrieve_context(req.question)
 
-        if not context.strip():
-            print("[ASK] no context found")
-            return {"answer": "This information is not found in the textbook."}
+        if context.strip():
+            print("[ASK] context found, calling agent...")
+        else:
+            print("[ASK] no context found, calling agent anyway for smart response...")
 
-        print("[ASK] context found, calling agent...")
-
-        # CRITICAL: await the async agent call
+        # Always call agent - it handles greetings, no-context, and context-based answers
         answer = await run_agent(req.question, context)
 
         print("[ASK] answer produced")
-        # answer should be a plain string
         return {"answer": answer}
 
     except Exception as e:
@@ -70,6 +68,7 @@ async def api_ask(req: AskRequest):
         import traceback
         traceback.print_exc()
         return {"answer": "Error: backend failed while calling the model. Check server logs."}
+
 
 
 if __name__ == "__main__":
